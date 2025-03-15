@@ -4,6 +4,19 @@
 	margin: 0 auto;
 }
 
+.catalog__body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.catalog-search {
+	min-width: 220px;
+	max-width: 300px;
+}
+
 .catalog__list {
 	display: flex;
 	flex-wrap: wrap;

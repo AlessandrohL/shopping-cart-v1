@@ -12,6 +12,7 @@ function App() {
 	const [products, setProducts] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
+	const [search, setSearch] = useState('')
 
 	useEffect(() => {
 		let ignore = false
@@ -30,7 +31,7 @@ function App() {
 				setError(null)
 			} catch (error) {
 				setError(error.message)
-				setProducts(null)
+				setProducts([])
 			} finally {
 				setLoading(false)
 			}
@@ -43,13 +44,34 @@ function App() {
 		}
 	}, [])
 
+	const searchTerm = search.toLowerCase()
+	const filteredProducts = products.filter(
+		p => p.title.toLowerCase().indexOf(searchTerm) !== -1
+	)
+
+	function handleSearchChange(e) {
+		const { value } = e.target
+		if (products.length > 0) {
+			setSearch(value)
+		}
+	}
+
 	return (
 		<CartProvider>
 			<section className='catalog'>
 				<Header />
 				{loading && <Loader />}
 				{!error ? (
-					<CatalogList products={products} />
+					<div className='catalog__body'>
+						<input
+							className='catalog-search'
+							value={search}
+							onChange={handleSearchChange}
+							type='text'
+							placeholder='Buscar...'
+						/>
+						<CatalogList products={filteredProducts} />
+					</div>
 				) : (
 					<p>Hubo un error al obtener los productos.</p>
 				)}
