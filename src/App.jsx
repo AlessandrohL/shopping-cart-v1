@@ -56,25 +56,32 @@ function App() {
 		}
 	}
 
+	let content
+
+	if (loading) {
+		content = <Loader />
+	} else if (error) {
+		content = <p>Hubo un error al obtener los productos</p>
+	} else {
+		content = (
+			<div className='catalog__body'>
+				<input
+					className='catalog-search'
+					value={search}
+					onChange={handleSearchChange}
+					type='text'
+					placeholder='Buscar...'
+				/>
+				<CatalogList products={filteredProducts} />
+			</div>
+		)
+	}
+
 	return (
 		<CartProvider>
 			<section className='catalog'>
 				<Header />
-				{loading && <Loader />}
-				{!error ? (
-					<div className='catalog__body'>
-						<input
-							className='catalog-search'
-							value={search}
-							onChange={handleSearchChange}
-							type='text'
-							placeholder='Buscar...'
-						/>
-						<CatalogList products={filteredProducts} />
-					</div>
-				) : (
-					<p>Hubo un error al obtener los productos.</p>
-				)}
+				{content}
 			</section>
 		</CartProvider>
 	)
